@@ -11,9 +11,9 @@ import {
   Alert,
 } from '@mui/material'
 import { useFirebaseAuth } from '../context/FirebaseAuthContext'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { ordersService, type Order } from '../services/rtdbService'
-import { CircularProgress, Button, Link as MuiLink } from '@mui/material'
+import { Button } from '@mui/material'
 import LocalShippingIcon from '@mui/icons-material/LocalShipping'
 
 export const OrdersPage = () => {
@@ -49,7 +49,7 @@ export const OrdersPage = () => {
     // Subscribe to real-time updates
     const unsubscribe = ordersService.subscribe((allOrders) => {
       // Only show orders with paid status
-      const userOrders = allOrders.filter((o) => o.userId === user.uid && o.paymentStatus === 'paid')
+      const userOrders = allOrders.filter((o) => user && o.userId === user.uid && o.paymentStatus === 'paid')
       setOrders(userOrders)
       setLoading(false)
     })

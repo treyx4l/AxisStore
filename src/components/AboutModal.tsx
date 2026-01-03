@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {
   Dialog,
   DialogTitle,
@@ -15,7 +14,6 @@ import {
 import CloseIcon from '@mui/icons-material/Close'
 import CodeIcon from '@mui/icons-material/Code'
 import EmailIcon from '@mui/icons-material/Email'
-import GitHubIcon from '@mui/icons-material/GitHub'
 import PersonIcon from '@mui/icons-material/Person'
 
 interface AboutModalProps {

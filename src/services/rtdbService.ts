@@ -766,8 +766,8 @@ export const bannersService = {
             callback(activeBanners)
         }
 
-        onValue(bannersRef, listener)
-        return () => off(bannersRef, listener)
+        onValue(bannersRef, listener as any)
+        return () => off(bannersRef, listener as any)
     },
 }
 
@@ -870,8 +870,8 @@ export const storeSettingsService = {
             }
         }
 
-        onValue(settingsRef, listener)
-        return () => off(settingsRef, listener)
+        onValue(settingsRef, listener as any)
+        return () => off(settingsRef, listener as any)
     },
 }
 

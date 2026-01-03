@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
+import type { ReactNode } from 'react'
 import { cartsService } from '../services/rtdbService'
 import { useFirebaseAuth } from './FirebaseAuthContext'
 import { useNotification } from './NotificationContext'

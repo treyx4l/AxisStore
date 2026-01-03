@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import {
   Box,
   Container,
@@ -13,9 +13,6 @@ import {
   CircularProgress,
   Tabs,
   Tab,
-  Card,
-  CardContent,
-  Chip,
   Grid,
   FormControl,
   InputLabel,
@@ -26,7 +23,6 @@ import PersonIcon from '@mui/icons-material/Person'
 import EmailIcon from '@mui/icons-material/Email'
 import PhoneIcon from '@mui/icons-material/Phone'
 import HomeIcon from '@mui/icons-material/Home'
-import ShoppingBagIcon from '@mui/icons-material/ShoppingBag'
 import SettingsIcon from '@mui/icons-material/Settings'
 import SecurityIcon from '@mui/icons-material/Security'
 import CreditCardIcon from '@mui/icons-material/CreditCard'
@@ -257,7 +253,7 @@ export const UserAccount = () => {
                   <Stack spacing={3}>
                     <Typography variant="h6">Profile Information</Typography>
                     <Grid container spacing={3}>
-                      <Grid item xs={12} md={6}>
+                      <Grid size={{ xs: 12, md: 6 }}>
                         <TextField
                           label="Display Name"
                           value={displayName}
@@ -268,7 +264,7 @@ export const UserAccount = () => {
                           }}
                         />
                       </Grid>
-                      <Grid item xs={12} md={6}>
+                      <Grid size={{ xs: 12, md: 6 }}>
                         <TextField
                           label="Email"
                           value={userProfile?.email || user.email || ''}
@@ -280,7 +276,7 @@ export const UserAccount = () => {
                           helperText="Email cannot be changed (Google account)"
                         />
                       </Grid>
-                      <Grid item xs={12} md={6}>
+                      <Grid size={{ xs: 12, md: 6 }}>
                         <TextField
                           label="Phone Number"
                           value={phoneNumber}
@@ -291,7 +287,7 @@ export const UserAccount = () => {
                           }}
                         />
                       </Grid>
-                      <Grid item xs={12}>
+                      <Grid size={{ xs: 12 }}>
                         <TextField
                           label="Address"
                           value={address}
@@ -326,7 +322,7 @@ export const UserAccount = () => {
                       This information will be used for order delivery and billing
                     </Typography>
                     <Grid container spacing={3}>
-                      <Grid item xs={12} md={6}>
+                      <Grid size={{ xs: 12, md: 6 }}>
                         <TextField
                           label="Full Name"
                           value={checkoutFullName}
@@ -337,7 +333,7 @@ export const UserAccount = () => {
                           }}
                         />
                       </Grid>
-                      <Grid item xs={12} md={6}>
+                      <Grid size={{ xs: 12, md: 6 }}>
                         <TextField
                           label="Phone Number"
                           value={checkoutPhone}
@@ -348,7 +344,7 @@ export const UserAccount = () => {
                           }}
                         />
                       </Grid>
-                      <Grid item xs={12}>
+                      <Grid size={{ xs: 12 }}>
                         <TextField
                           label="Street Address"
                           value={checkoutAddress}
@@ -361,7 +357,7 @@ export const UserAccount = () => {
                           }}
                         />
                       </Grid>
-                      <Grid item xs={12}>
+                      <Grid size={{ xs: 12 }}>
                         <FormControl fullWidth>
                           <InputLabel>Region</InputLabel>
                           <Select
@@ -378,7 +374,7 @@ export const UserAccount = () => {
                           </Select>
                         </FormControl>
                       </Grid>
-                      <Grid item xs={12}>
+                      <Grid size={{ xs: 12 }}>
                         <TextField
                           label="GPS Code"
                           value={checkoutGpsCode}

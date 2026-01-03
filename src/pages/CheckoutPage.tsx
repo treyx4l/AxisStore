@@ -96,7 +96,7 @@ export const CheckoutPage = () => {
         callback: async (response: any) => {
           // Payment successful - NOW create the order
           try {
-            const orderId = await ordersService.create({
+            await ordersService.create({
               ...orderData,
               paymentReference: response.reference,
               paymentStatus: 'paid',
@@ -172,6 +172,8 @@ export const CheckoutPage = () => {
           gpsCode: formData.gpsCode,
         },
         paymentMethod: 'paystack', // Always use Paystack
+        status: 'pending' as const,
+        paymentStatus: 'pending' as const,
       }
 
       // Initialize Paystack payment - order will be created only after successful payment

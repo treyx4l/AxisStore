@@ -17,7 +17,6 @@ import { useFirebaseAuth } from "../context/FirebaseAuthContext";
 import { useCart } from "../context/CartContext";
 import { useProducts } from "../context/ProductsContext";
 import { AuthDialog } from "../components/AuthDialog";
-import { ProductGrid } from "../components/ProductGrid";
 import { ProductDetailModal } from "../components/ProductDetailModal";
 import { Link } from "react-router-dom";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -100,7 +99,7 @@ const ProductImageWithName = ({ product }: { product: Product }) => {
 const CategorySection = ({
   category,
   products,
-  onAddToCart,
+  onAddToCart: _onAddToCart,
   onProductClick,
   isSoftware = false,
 }: CategorySectionProps) => {

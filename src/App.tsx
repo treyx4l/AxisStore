@@ -8,7 +8,6 @@ import {
   ThemeProvider,
   Toolbar,
   Typography,
-  useMediaQuery,
   Container,
   Stack,
   Button,

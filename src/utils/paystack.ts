@@ -45,7 +45,7 @@ export const initializePaystack = (config: PaystackConfig) => {
     handler.openIframe()
 }
 
-export const generatePaymentReference = (orderId: string): string => {
+export const generatePaymentReference = (_orderId: string): string => {
     const timestamp = Date.now()
     const random = Math.random().toString(36).substring(2, 9).toUpperCase()
     return `PAY-${timestamp}-${random}`

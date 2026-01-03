@@ -21,7 +21,7 @@ export const ProductImage = ({ product, alt, sx, ...props }: ProductImageProps) 
           setImageSrc(image)
           setLoading(false)
         })
-        .catch((error) => {
+        .catch(() => {
           // Error loading product image - handled silently
           setLoading(false)
         })

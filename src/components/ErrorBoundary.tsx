@@ -1,4 +1,5 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react'
+import { Component } from 'react'
+import type { ErrorInfo, ReactNode } from 'react'
 import { Box, Container, Typography, Button } from '@mui/material'
 
 interface Props {
@@ -20,7 +21,7 @@ export class ErrorBoundary extends Component<Props, State> {
     return { hasError: true, error }
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  public componentDidCatch(_error: Error, _errorInfo: ErrorInfo) {
     // Error logged silently for security
   }
 

@@ -23,7 +23,6 @@ import {
   Chip,
   Card,
   CardContent,
-  CardMedia,
   CardActions,
   CircularProgress,
   Snackbar,
@@ -44,7 +43,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  products as initialProducts,
   categories,
   type Product,
   type CategoryId,
@@ -74,14 +72,17 @@ export const AdminDashboard = () => {
   const [notification, setNotification] = useState<{
     open: boolean;
     message: string;
-    severity: 'success' | 'error' | 'warning' | 'info';
+    severity: "success" | "error" | "warning" | "info";
   }>({
     open: false,
-    message: '',
-    severity: 'info',
+    message: "",
+    severity: "info",
   });
 
-  const showNotification = (message: string, severity: 'success' | 'error' | 'warning' | 'info' = 'info') => {
+  const showNotification = (
+    message: string,
+    severity: "success" | "error" | "warning" | "info" = "info"
+  ) => {
     setNotification({ open: true, message, severity });
   };
 
@@ -177,12 +178,14 @@ export const AdminDashboard = () => {
     const loadSettings = async () => {
       try {
         const settings = await storeSettingsService.get();
-        setStoreSettings(settings || {
-          storeName: "AXIS STORE",
-          storeEmail: "admin@axisstore.com",
-          taxRate: 0,
-          shippingCost: 15,
-        });
+        setStoreSettings(
+          settings || {
+            storeName: "AXIS STORE",
+            storeEmail: "admin@axisstore.com",
+            taxRate: 0,
+            shippingCost: 15,
+          }
+        );
       } catch (error) {
         // Error loading store settings - handled silently
         // Set defaults on error
@@ -199,12 +202,14 @@ export const AdminDashboard = () => {
 
     // Subscribe to settings changes
     const unsubscribe = storeSettingsService.subscribe((settings) => {
-      setStoreSettings(settings || {
-        storeName: "AXIS STORE",
-        storeEmail: "admin@axisstore.com",
-        taxRate: 0,
-        shippingCost: 15,
-      });
+      setStoreSettings(
+        settings || {
+          storeName: "AXIS STORE",
+          storeEmail: "admin@axisstore.com",
+          taxRate: 0,
+          shippingCost: 15,
+        }
+      );
     });
 
     return () => unsubscribe();
@@ -255,11 +260,11 @@ export const AdminDashboard = () => {
   const handleEditProduct = (product: Product) => {
     setEditingProduct(product);
     // Separate primary image from additional images
-    const primaryImage = product.image || '';
+    const primaryImage = product.image || "";
     const allImages = product.images || [];
     // Filter out the primary image from additional images array
-    const additionalImages = allImages.filter(img => img !== primaryImage);
-    
+    const additionalImages = allImages.filter((img) => img !== primaryImage);
+
     setFormData({
       ...product,
       image: primaryImage,
@@ -280,7 +285,10 @@ export const AdminDashboard = () => {
         await statsService.updateProductCount(newCount);
       } catch (error) {
         // Error deleting product - handled silently
-        showNotification("Failed to delete product. Please try again.", "error");
+        showNotification(
+          "Failed to delete product. Please try again.",
+          "error"
+        );
       }
     }
   };
@@ -352,9 +360,11 @@ export const AdminDashboard = () => {
       showNotification("Tracking information updated successfully!", "success");
     } catch (error: any) {
       // Error updating tracking - handled silently
-      if (error.code === 'RATE_LIMIT_EXCEEDED') {
+      if (error.code === "RATE_LIMIT_EXCEEDED") {
         showNotification(
-          `Rate limit exceeded. Please wait ${error.retryAfter || 0} seconds before trying again.`,
+          `Rate limit exceeded. Please wait ${
+            error.retryAfter || 0
+          } seconds before trying again.`,
           "warning"
         );
       } else {
@@ -384,7 +394,10 @@ export const AdminDashboard = () => {
         formData.price === undefined ||
         formData.price <= 0
       ) {
-        showNotification("Please fill in all required fields (name, description, price)", "warning");
+        showNotification(
+          "Please fill in all required fields (name, description, price)",
+          "warning"
+        );
         setUploading(false);
         return;
       }
@@ -409,7 +422,7 @@ export const AdminDashboard = () => {
       }
 
       const imagePath = formData.image.trim();
-      
+
       // Combine primary image with additional images, removing duplicates
       const allImages = [imagePath, ...(formData.images || [])].filter(
         (url, index, self) => url && url.trim() && self.indexOf(url) === index
@@ -432,8 +445,8 @@ export const AdminDashboard = () => {
         await productsService.update(editingProduct.id, productData);
       } else {
         // Add to RTDB
-        const newProductId = await productsService.create(productData);
-        
+        await productsService.create(productData);
+
         // Update product count
         const currentCount = products.length;
         await statsService.updateProductCount(currentCount + 1);
@@ -466,13 +479,18 @@ export const AdminDashboard = () => {
       setImagePreview("");
       setAdditionalImageUrl("");
     } catch (error: any) {
-      if (error.code === 'RATE_LIMIT_EXCEEDED') {
+      if (error.code === "RATE_LIMIT_EXCEEDED") {
         showNotification(
-          `Rate limit exceeded. Please wait ${error.retryAfter || 0} seconds before trying again.`,
+          `Rate limit exceeded. Please wait ${
+            error.retryAfter || 0
+          } seconds before trying again.`,
           "warning"
         );
       } else {
-        showNotification("Something went wrong. Please try again later.", "error");
+        showNotification(
+          "Something went wrong. Please try again later.",
+          "error"
+        );
       }
     } finally {
       setUploading(false);
@@ -529,7 +547,7 @@ export const AdminDashboard = () => {
           </Stack>
 
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Paper sx={{ p: 2.5 }}>
                 <Stack spacing={1}>
                   <Typography variant="overline" color="text.secondary">
@@ -541,7 +559,7 @@ export const AdminDashboard = () => {
                 </Stack>
               </Paper>
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Paper sx={{ p: 2.5 }}>
                 <Stack spacing={1}>
                   <Typography variant="overline" color="text.secondary">
@@ -553,7 +571,7 @@ export const AdminDashboard = () => {
                 </Stack>
               </Paper>
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Paper sx={{ p: 2.5 }}>
                 <Stack spacing={1}>
                   <Typography variant="overline" color="text.secondary">
@@ -565,7 +583,7 @@ export const AdminDashboard = () => {
                 </Stack>
               </Paper>
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid size={{ xs: 12, sm: 6, md: 3 }}>
               <Paper sx={{ p: 2.5 }}>
                 <Stack spacing={1}>
                   <Stack
@@ -585,7 +603,11 @@ export const AdminDashboard = () => {
                     </Button>
                   </Stack>
                   <Typography variant="h5">
-                    GH₵{totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    GH₵
+                    {totalRevenue.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
                   </Typography>
                 </Stack>
               </Paper>
@@ -638,14 +660,18 @@ export const AdminDashboard = () => {
                         <TableRow>
                           <TableCell sx={{ fontWeight: 700 }}>Image</TableCell>
                           <TableCell sx={{ fontWeight: 700 }}>Name</TableCell>
-                          <TableCell sx={{ fontWeight: 700 }}>Category</TableCell>
+                          <TableCell sx={{ fontWeight: 700 }}>
+                            Category
+                          </TableCell>
                           <TableCell sx={{ fontWeight: 700 }}>Price</TableCell>
                           <TableCell sx={{ fontWeight: 700 }}>Stock</TableCell>
-                          <TableCell sx={{ fontWeight: 700 }}>Actions</TableCell>
+                          <TableCell sx={{ fontWeight: 700 }}>
+                            Actions
+                          </TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                    {products.map((product) => (
+                        {products.map((product) => (
                           <TableRow key={product.id} hover>
                             <TableCell>
                               <Box
@@ -662,7 +688,7 @@ export const AdminDashboard = () => {
                               >
                                 <img
                                   src={product.image}
-                            alt={product.name}
+                                  alt={product.name}
                                   style={{
                                     maxWidth: "100%",
                                     maxHeight: "100%",
@@ -677,13 +703,13 @@ export const AdminDashboard = () => {
                             </TableCell>
                             <TableCell>
                               <Typography variant="body2" fontWeight={600}>
-                              {product.name}
-                            </Typography>
-                            {product.isSoftware && (
-                              <Chip
-                                label="Software"
-                                size="small"
-                                color="secondary"
+                                {product.name}
+                              </Typography>
+                              {product.isSoftware && (
+                                <Chip
+                                  label="Software"
+                                  size="small"
+                                  color="secondary"
                                   sx={{ mt: 0.5 }}
                                 />
                               )}
@@ -695,17 +721,23 @@ export const AdminDashboard = () => {
                                     (c) => c.id === product.category
                                   )?.label
                                 }
-                              size="small"
+                                size="small"
                               />
                             </TableCell>
                             <TableCell>
                               <Typography variant="body2" fontWeight={600}>
-                                GH₵{product.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                GH₵
+                                {product.price.toLocaleString("en-US", {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })}
                               </Typography>
                             </TableCell>
                             <TableCell>
                               <Typography variant="body2">
-                                {product.stock !== undefined ? product.stock : 0}
+                                {product.stock !== undefined
+                                  ? product.stock
+                                  : 0}
                               </Typography>
                             </TableCell>
                             <TableCell>
@@ -714,17 +746,19 @@ export const AdminDashboard = () => {
                                   size="small"
                                   variant="outlined"
                                   startIcon={<EditIcon />}
-                              onClick={() => handleEditProduct(product)}
-                            >
+                                  onClick={() => handleEditProduct(product)}
+                                >
                                   Edit
                                 </Button>
                                 <Button
-                              size="small"
+                                  size="small"
                                   variant="outlined"
-                              color="error"
+                                  color="error"
                                   startIcon={<DeleteIcon />}
-                              onClick={() => handleDeleteProduct(product.id)}
-                            >
+                                  onClick={() =>
+                                    handleDeleteProduct(product.id)
+                                  }
+                                >
                                   Delete
                                 </Button>
                               </Stack>
@@ -804,10 +838,17 @@ export const AdminDashboard = () => {
                                   {order.items.length} item(s)
                                 </TableCell>
                                 <TableCell>
-                                  GH₵{order.total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                  GH₵
+                                  {order.total.toLocaleString("en-US", {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })}
                                 </TableCell>
                                 <TableCell>
-                                  <FormControl size="small" sx={{ minWidth: 150 }}>
+                                  <FormControl
+                                    size="small"
+                                    sx={{ minWidth: 150 }}
+                                  >
                                     <Select
                                       value={order.status}
                                       onChange={(e) => {
@@ -818,16 +859,26 @@ export const AdminDashboard = () => {
                                       }}
                                       sx={{
                                         borderRadius: 0,
-                                        '& .MuiSelect-select': {
+                                        "& .MuiSelect-select": {
                                           py: 0.5,
                                         },
                                       }}
                                     >
-                                      <MenuItem value="pending">Pending</MenuItem>
-                                      <MenuItem value="processing">Processing</MenuItem>
-                                      <MenuItem value="shipped">Shipped</MenuItem>
-                                      <MenuItem value="delivered">Delivered</MenuItem>
-                                      <MenuItem value="cancelled">Cancelled</MenuItem>
+                                      <MenuItem value="pending">
+                                        Pending
+                                      </MenuItem>
+                                      <MenuItem value="processing">
+                                        Processing
+                                      </MenuItem>
+                                      <MenuItem value="shipped">
+                                        Shipped
+                                      </MenuItem>
+                                      <MenuItem value="delivered">
+                                        Delivered
+                                      </MenuItem>
+                                      <MenuItem value="cancelled">
+                                        Cancelled
+                                      </MenuItem>
                                     </Select>
                                   </FormControl>
                                 </TableCell>
@@ -852,13 +903,15 @@ export const AdminDashboard = () => {
                                           : "Add Tracking"}
                                       </Button>
                                     )}
-                                      <Button
-                                        size="small"
+                                    <Button
+                                      size="small"
                                       variant="outlined"
-                                      onClick={() => handleOpenOrderDetails(order)}
-                                      >
+                                      onClick={() =>
+                                        handleOpenOrderDetails(order)
+                                      }
+                                    >
                                       View Details
-                                      </Button>
+                                    </Button>
                                   </Stack>
                                 </TableCell>
                               </TableRow>
@@ -902,7 +955,7 @@ export const AdminDashboard = () => {
                       </Stack>
                       <Grid container spacing={2}>
                         {banners.map((banner) => (
-                          <Grid item xs={12} sm={6} md={4} key={banner.id}>
+                          <Grid size={{ xs: 12, sm: 6, md: 4 }} key={banner.id}>
                             <Card>
                               <Box
                                 sx={{
@@ -952,7 +1005,7 @@ export const AdminDashboard = () => {
                                     setEditingBanner(banner);
                                     setBannerFormData({
                                       imageUrl: banner.imageUrl,
-                                      linkUrl: banner.linkUrl || '',
+                                      linkUrl: banner.linkUrl || "",
                                       order: banner.order,
                                       active: banner.active,
                                     });
@@ -976,7 +1029,10 @@ export const AdminDashboard = () => {
                                           await bannersService.getAllForAdmin();
                                         setBanners(updated);
                                       } catch (error) {
-                                        showNotification("Failed to delete banner", "error");
+                                        showNotification(
+                                          "Failed to delete banner",
+                                          "error"
+                                        );
                                       }
                                     }
                                   }}
@@ -988,7 +1044,7 @@ export const AdminDashboard = () => {
                           </Grid>
                         ))}
                         {banners.length === 0 && (
-                          <Grid item xs={12}>
+                          <Grid size={{ xs: 12 }}>
                             <Typography
                               variant="body2"
                               color="text.secondary"
@@ -1005,7 +1061,9 @@ export const AdminDashboard = () => {
                   </Paper>
 
                   {/* Store Settings */}
-                  <Paper sx={{ p: 3, borderRadius: 0, border: '1px solid #e0e0e0' }}>
+                  <Paper
+                    sx={{ p: 3, borderRadius: 0, border: "1px solid #e0e0e0" }}
+                  >
                     <Stack spacing={3}>
                       <Typography variant="h6" fontWeight={700}>
                         Store Settings
@@ -1014,20 +1072,26 @@ export const AdminDashboard = () => {
                         label="Store Name"
                         value={storeSettings.storeName || ""}
                         onChange={(e) =>
-                          setStoreSettings({ ...storeSettings, storeName: e.target.value })
+                          setStoreSettings({
+                            ...storeSettings,
+                            storeName: e.target.value,
+                          })
                         }
                         fullWidth
-                        sx={{ '& .MuiOutlinedInput-root': { borderRadius: 0 } }}
+                        sx={{ "& .MuiOutlinedInput-root": { borderRadius: 0 } }}
                       />
                       <TextField
                         label="Store Email"
                         type="email"
                         value={storeSettings.storeEmail || ""}
                         onChange={(e) =>
-                          setStoreSettings({ ...storeSettings, storeEmail: e.target.value })
+                          setStoreSettings({
+                            ...storeSettings,
+                            storeEmail: e.target.value,
+                          })
                         }
                         fullWidth
-                        sx={{ '& .MuiOutlinedInput-root': { borderRadius: 0 } }}
+                        sx={{ "& .MuiOutlinedInput-root": { borderRadius: 0 } }}
                       />
                       <TextField
                         label="Tax Rate (%)"
@@ -1042,7 +1106,7 @@ export const AdminDashboard = () => {
                         fullWidth
                         inputProps={{ min: 0, max: 100, step: 0.1 }}
                         helperText="Tax rate as a percentage (e.g., 8.5 for 8.5%)"
-                        sx={{ '& .MuiOutlinedInput-root': { borderRadius: 0 } }}
+                        sx={{ "& .MuiOutlinedInput-root": { borderRadius: 0 } }}
                       />
                       <TextField
                         label="Shipping Cost (GH₵)"
@@ -1057,7 +1121,7 @@ export const AdminDashboard = () => {
                         fullWidth
                         inputProps={{ min: 0, step: 0.01 }}
                         helperText="Standard shipping cost for all orders"
-                        sx={{ '& .MuiOutlinedInput-root': { borderRadius: 0 } }}
+                        sx={{ "& .MuiOutlinedInput-root": { borderRadius: 0 } }}
                       />
                       <Button
                         variant="contained"
@@ -1065,9 +1129,15 @@ export const AdminDashboard = () => {
                           setSavingSettings(true);
                           try {
                             await storeSettingsService.update(storeSettings);
-                            showNotification("Store settings saved successfully!", "success");
+                            showNotification(
+                              "Store settings saved successfully!",
+                              "success"
+                            );
                           } catch (error) {
-                            showNotification("Failed to save store settings.", "error");
+                            showNotification(
+                              "Failed to save store settings.",
+                              "error"
+                            );
                           } finally {
                             setSavingSettings(false);
                           }
@@ -1160,7 +1230,7 @@ export const AdminDashboard = () => {
                 />
               </Box>
             )}
-            
+
             {/* Additional Images Section */}
             <Box sx={{ mt: 2 }}>
               <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
@@ -1227,7 +1297,7 @@ export const AdminDashboard = () => {
                     placeholder="https://example.com/additional-image.jpg"
                     size="small"
                     fullWidth
-                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: 0 } }}
+                    sx={{ "& .MuiOutlinedInput-root": { borderRadius: 0 } }}
                   />
                   <Button
                     variant="outlined"
@@ -1260,7 +1330,7 @@ export const AdminDashboard = () => {
                 </Stack>
               </Stack>
             </Box>
-            
+
             <TextField
               select
               label="Category"
@@ -1335,9 +1405,9 @@ export const AdminDashboard = () => {
             onClick={handleSaveProduct}
             variant="contained"
             disabled={
-              !formData.name || 
-              !formData.description || 
-              !formData.price || 
+              !formData.name ||
+              !formData.description ||
+              !formData.price ||
               formData.price <= 0 ||
               !formData.image ||
               uploading
@@ -1433,7 +1503,7 @@ export const AdminDashboard = () => {
                     border: "1px solid #e0e0e0",
                   }}
                 />
-    </Box>
+              </Box>
             )}
             <TextField
               label="Link URL (Optional)"
@@ -1484,13 +1554,19 @@ export const AdminDashboard = () => {
             variant="contained"
             onClick={async () => {
               if (!bannerFormData.imageUrl.trim()) {
-                showNotification("Please provide a banner image URL", "warning");
+                showNotification(
+                  "Please provide a banner image URL",
+                  "warning"
+                );
                 return;
               }
 
               // Check if user is authenticated
               if (!user || !user.email) {
-                showNotification("You must be logged in to save banners", "warning");
+                showNotification(
+                  "You must be logged in to save banners",
+                  "warning"
+                );
                 return;
               }
 
@@ -1510,7 +1586,10 @@ export const AdminDashboard = () => {
                 try {
                   new URL(bannerFormData.imageUrl.trim());
                 } catch {
-                  showNotification("Please provide a valid image URL", "warning");
+                  showNotification(
+                    "Please provide a valid image URL",
+                    "warning"
+                  );
                   return;
                 }
 
@@ -1582,7 +1661,11 @@ export const AdminDashboard = () => {
         }}
       >
         <DialogTitle>
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
             <Typography variant="h6">Order Details</Typography>
             <IconButton onClick={handleCloseOrderDetails} size="small">
               <CloseIcon />
@@ -1594,10 +1677,16 @@ export const AdminDashboard = () => {
             <Stack spacing={3}>
               {/* Order Info */}
               <Box>
-                <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                <Typography
+                  variant="subtitle2"
+                  color="text.secondary"
+                  gutterBottom
+                >
                   Order Number
                 </Typography>
-                <Typography variant="h6">{selectedOrder.orderNumber}</Typography>
+                <Typography variant="h6">
+                  {selectedOrder.orderNumber}
+                </Typography>
               </Box>
 
               <Divider />
@@ -1618,14 +1707,16 @@ export const AdminDashboard = () => {
                     <strong>Phone:</strong> {selectedOrder.customerInfo.phone}
                   </Typography>
                   <Typography variant="body2">
-                    <strong>Address:</strong> {selectedOrder.customerInfo.address}
+                    <strong>Address:</strong>{" "}
+                    {selectedOrder.customerInfo.address}
                   </Typography>
                   <Typography variant="body2">
                     <strong>Region:</strong> {selectedOrder.customerInfo.region}
                   </Typography>
                   {selectedOrder.customerInfo.gpsCode && (
                     <Typography variant="body2">
-                      <strong>GPS Code:</strong> {selectedOrder.customerInfo.gpsCode}
+                      <strong>GPS Code:</strong>{" "}
+                      {selectedOrder.customerInfo.gpsCode}
                     </Typography>
                   )}
                 </Stack>
@@ -1654,10 +1745,21 @@ export const AdminDashboard = () => {
                           <TableCell>{item.productName}</TableCell>
                           <TableCell align="right">{item.quantity}</TableCell>
                           <TableCell align="right">
-                            GH₵{item.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            GH₵
+                            {item.price.toLocaleString("en-US", {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
                           </TableCell>
                           <TableCell align="right">
-                            GH₵{(item.price * item.quantity).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            GH₵
+                            {(item.price * item.quantity).toLocaleString(
+                              "en-US",
+                              {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              }
+                            )}
                           </TableCell>
                         </TableRow>
                       ))}
@@ -1674,20 +1776,32 @@ export const AdminDashboard = () => {
                   <Stack direction="row" justifyContent="space-between">
                     <Typography variant="body2">Subtotal</Typography>
                     <Typography variant="body2">
-                      GH₵{selectedOrder.subtotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      GH₵
+                      {selectedOrder.subtotal.toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
                     </Typography>
                   </Stack>
                   <Stack direction="row" justifyContent="space-between">
                     <Typography variant="body2">Shipping</Typography>
                     <Typography variant="body2">
-                      GH₵{selectedOrder.shipping.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      GH₵
+                      {selectedOrder.shipping.toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
                     </Typography>
                   </Stack>
                   <Divider />
                   <Stack direction="row" justifyContent="space-between">
                     <Typography variant="h6">Total</Typography>
                     <Typography variant="h6" color="primary">
-                      GH₵{selectedOrder.total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      GH₵
+                      {selectedOrder.total.toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
                     </Typography>
                   </Stack>
                 </Stack>
@@ -1713,17 +1827,23 @@ export const AdminDashboard = () => {
                       <strong>Payment Status:</strong>
                     </Typography>
                     <Chip
-                      label={selectedOrder.paymentStatus || 'pending'}
-                      color={selectedOrder.paymentStatus === 'paid' ? 'success' : 'warning'}
+                      label={selectedOrder.paymentStatus || "pending"}
+                      color={
+                        selectedOrder.paymentStatus === "paid"
+                          ? "success"
+                          : "warning"
+                      }
                       size="small"
                     />
                   </Stack>
                   <Typography variant="body2">
-                    <strong>Order Date:</strong> {new Date(selectedOrder.createdAt).toLocaleString()}
+                    <strong>Order Date:</strong>{" "}
+                    {new Date(selectedOrder.createdAt).toLocaleString()}
                   </Typography>
                   {selectedOrder.updatedAt && (
                     <Typography variant="body2">
-                      <strong>Last Updated:</strong> {new Date(selectedOrder.updatedAt).toLocaleString()}
+                      <strong>Last Updated:</strong>{" "}
+                      {new Date(selectedOrder.updatedAt).toLocaleString()}
                     </Typography>
                   )}
                 </Stack>
@@ -1734,18 +1854,24 @@ export const AdminDashboard = () => {
                 <>
                   <Divider />
                   <Box>
-                    <Typography variant="subtitle2" fontWeight={600} gutterBottom>
+                    <Typography
+                      variant="subtitle2"
+                      fontWeight={600}
+                      gutterBottom
+                    >
                       Tracking Information
                     </Typography>
                     <Stack spacing={1}>
                       {selectedOrder.trackingNumber && (
                         <Typography variant="body2">
-                          <strong>Tracking Number:</strong> {selectedOrder.trackingNumber}
+                          <strong>Tracking Number:</strong>{" "}
+                          {selectedOrder.trackingNumber}
                         </Typography>
                       )}
                       {selectedOrder.trackingCarrier && (
                         <Typography variant="body2">
-                          <strong>Carrier:</strong> {selectedOrder.trackingCarrier}
+                          <strong>Carrier:</strong>{" "}
+                          {selectedOrder.trackingCarrier}
                         </Typography>
                       )}
                       {selectedOrder.trackingUrl && (
@@ -1770,17 +1896,21 @@ export const AdminDashboard = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseOrderDetails}>Close</Button>
-          {selectedOrder && (selectedOrder.status === "shipped" || selectedOrder.status === "processing") && (
-            <Button
-              variant="contained"
-              onClick={() => {
-                handleCloseOrderDetails();
-                handleOpenTrackingDialog(selectedOrder);
-              }}
-            >
-              {selectedOrder.trackingNumber ? "Edit Tracking" : "Add Tracking"}
-            </Button>
-          )}
+          {selectedOrder &&
+            (selectedOrder.status === "shipped" ||
+              selectedOrder.status === "processing") && (
+              <Button
+                variant="contained"
+                onClick={() => {
+                  handleCloseOrderDetails();
+                  handleOpenTrackingDialog(selectedOrder);
+                }}
+              >
+                {selectedOrder.trackingNumber
+                  ? "Edit Tracking"
+                  : "Add Tracking"}
+              </Button>
+            )}
         </DialogActions>
       </Dialog>
 
@@ -1789,13 +1919,13 @@ export const AdminDashboard = () => {
         open={notification.open}
         autoHideDuration={6000}
         onClose={handleCloseNotification}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert
           onClose={handleCloseNotification}
           severity={notification.severity}
           variant="filled"
-          sx={{ width: '100%' }}
+          sx={{ width: "100%" }}
         >
           {notification.message}
         </Alert>

@@ -1,4 +1,4 @@
-import { Box, Button, Typography, Badge, Chip } from "@mui/material";
+import { Box, Button, Typography, Chip } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import type { Product } from "../data/products";
 

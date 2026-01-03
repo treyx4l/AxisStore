@@ -8,7 +8,6 @@ const primaryBlueLight = '#4a8fc7'
 const accentPink = '#E262A2'
 const accentYellow = '#FBC817'
 const accentCyan = '#25B1BE'
-const accentPurple = '#553773'
 
 const commonThemeOptions: ThemeOptions = {
   shape: {
