@@ -1,0 +1,4 @@
+# This folder stores product images
+# Add your product image files here
+# Reference them in Firestore as: /assets/products/filename.jpg
+

@@ -1,0 +1,117 @@
+{
+    "rules": {
+    ".read": false,
+    ".write": false,
+    
+    // Products: Public read, admin email write only
+        "products": {
+            ".read": true,
+      ".write": "auth != null && auth.token.email == 'tredway4k@gmail.com'",
+      "$productId": {
+        ".read": true,
+        ".write": "auth != null && auth.token.email == 'tredway4k@gmail.com'",
+        ".validate": "newData.hasChildren(['name', 'description', 'price', 'category', 'image', 'isSoftware']) && newData.child('name').isString() && newData.child('name').val().length > 0 && newData.child('name').val().length <= 200 && newData.child('description').isString() && newData.child('description').val().length > 0 && newData.child('description').val().length <= 2000 && newData.child('price').isNumber() && newData.child('price').val() > 0 && newData.child('price').val() <= 1000000 && newData.child('category').isString() && (newData.child('category').val() == 'laptops' || newData.child('category').val() == 'desktops' || newData.child('category').val() == 'all-in-one' || newData.child('category').val() == 'others' || newData.child('category').val() == 'softwares') && newData.child('image').isString() && newData.child('image').val().length > 0 && newData.child('image').val().length <= 500 && newData.child('isSoftware').isBoolean()"
+      }
+    },
+    
+    // Images: Public read, admin email write only
+    "images": {
+      ".read": true,
+      ".write": "auth != null && auth.token.email == 'tredway4k@gmail.com'",
+      "$productId": {
+        ".read": true,
+        ".write": "auth != null && auth.token.email == 'tredway4k@gmail.com'",
+        ".validate": "newData.hasChildren(['data', 'createdAt']) && newData.child('data').isString() && newData.child('data').val().length > 0 && newData.child('data').val().length <= 10485760 && newData.child('createdAt').isNumber() && newData.child('createdAt').val() > 0"
+      }
+    },
+    
+    // Orders: Users can read their own, create their own, admins can read all and update
+        "orders": {
+      ".read": "auth != null",
+      ".write": false,
+            "$orderId": {
+        ".read": "auth != null && (data.child('userId').val() == auth.uid || auth.token.email == 'tredway4k@gmail.com')",
+        ".write": "auth != null && (auth.token.email == 'tredway4k@gmail.com' || (!data.exists() && newData.child('userId').val() == auth.uid))",
+        ".validate": "newData.hasChildren(['userId', 'orderNumber', 'items', 'subtotal', 'shipping', 'total', 'status', 'customerInfo', 'paymentMethod', 'paymentStatus', 'createdAt', 'updatedAt']) && newData.child('userId').isString() && newData.child('userId').val().length > 0 && newData.child('orderNumber').isString() && newData.child('orderNumber').val().matches(/^ORD-\\d+$/) && newData.child('items').hasChildren() && newData.child('subtotal').isNumber() && newData.child('subtotal').val() >= 0 && newData.child('subtotal').val() <= 1000000 && newData.child('shipping').isNumber() && newData.child('shipping').val() >= 0 && newData.child('shipping').val() <= 1000 && newData.child('total').isNumber() && newData.child('total').val() >= 0 && newData.child('total').val() <= 1000000 && newData.child('status').isString() && (newData.child('status').val() == 'pending' || newData.child('status').val() == 'processing' || newData.child('status').val() == 'shipped' || newData.child('status').val() == 'delivered' || newData.child('status').val() == 'cancelled') && newData.child('customerInfo').hasChildren(['fullName', 'email', 'phone', 'address', 'region', 'gpsCode']) && newData.child('customerInfo').child('fullName').isString() && newData.child('customerInfo').child('fullName').val().length > 0 && newData.child('customerInfo').child('fullName').val().length <= 200 && newData.child('customerInfo').child('email').isString() && newData.child('customerInfo').child('email').val().matches(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$/) && newData.child('customerInfo').child('phone').isString() && newData.child('customerInfo').child('phone').val().length > 0 && newData.child('customerInfo').child('phone').val().length <= 50 && newData.child('customerInfo').child('address').isString() && newData.child('customerInfo').child('address').val().length > 0 && newData.child('customerInfo').child('address').val().length <= 500 && newData.child('customerInfo').child('region').isString() && newData.child('customerInfo').child('region').val().length <= 100 && newData.child('customerInfo').child('gpsCode').isString() && newData.child('customerInfo').child('gpsCode').val().length <= 50 && newData.child('paymentMethod').isString() && newData.child('paymentMethod').val().length > 0 && newData.child('paymentMethod').val().length <= 50 && newData.child('paymentStatus').isString() && (newData.child('paymentStatus').val() == 'pending' || newData.child('paymentStatus').val() == 'paid' || newData.child('paymentStatus').val() == 'failed' || newData.child('paymentStatus').val() == 'refunded') && newData.child('createdAt').isNumber() && newData.child('createdAt').val() > 0 && newData.child('updatedAt').isNumber() && newData.child('updatedAt').val() > 0 && newData.child('updatedAt').val() >= newData.child('createdAt').val()",
+        "items": {
+          "$itemId": {
+            ".validate": "newData.hasChildren(['productId', 'productName', 'quantity', 'price']) && newData.child('productId').isString() && newData.child('productId').val().length > 0 && newData.child('productName').isString() && newData.child('productName').val().length > 0 && newData.child('productName').val().length <= 200 && newData.child('quantity').isNumber() && newData.child('quantity').val() > 0 && newData.child('quantity').val() <= 100 && newData.child('price').isNumber() && newData.child('price').val() > 0 && newData.child('price').val() <= 1000000"
+          }
+        },
+        "trackingNumber": {
+          ".validate": "newData.isString() && newData.val().length <= 100"
+        },
+        "trackingUrl": {
+          ".validate": "newData.isString() && (newData.val() == '' || newData.val().matches(/^https?:\\/\\/.+/))"
+        },
+        "trackingCarrier": {
+          ".validate": "newData.isString() && newData.val().length <= 100"
+        },
+        "paymentReference": {
+          ".validate": "newData.isString() && newData.val().length <= 200"
+        }
+      }
+    },
+    
+    // Carts: Users can only access their own cart
+        "carts": {
+      ".read": false,
+      ".write": false,
+            "$userId": {
+        ".read": "auth != null && $userId === auth.uid",
+        ".write": "auth != null && $userId === auth.uid",
+        "$itemId": {
+          ".validate": "newData.hasChildren(['product', 'quantity']) && newData.child('product').hasChildren(['id', 'name', 'description', 'price', 'category', 'image', 'isSoftware']) && newData.child('quantity').isNumber() && newData.child('quantity').val() > 0 && newData.child('quantity').val() <= 100"
+        }
+      }
+    },
+    
+    // Statistics: Public read, admin email write only
+        "stats": {
+            ".read": true,
+      ".write": "auth != null && auth.token.email == 'tredway4k@gmail.com'",
+      ".validate": "newData.hasChildren(['totalRevenue', 'totalOrders', 'totalProducts']) && newData.child('totalRevenue').isNumber() && newData.child('totalRevenue').val() >= 0 && newData.child('totalRevenue').val() <= 1000000000 && newData.child('totalOrders').isNumber() && newData.child('totalOrders').val() >= 0 && newData.child('totalOrders').val() <= 1000000 && newData.child('totalProducts').isNumber() && newData.child('totalProducts').val() >= 0 && newData.child('totalProducts').val() <= 100000"
+        },
+    
+    // User profiles: Users can only access their own data
+        "users": {
+      ".read": false,
+      ".write": false,
+            "$userId": {
+        ".read": "auth != null && $userId === auth.uid",
+        ".write": "auth != null && $userId === auth.uid",
+        ".validate": "newData.hasChildren() == false || (newData.hasChildren(['displayName', 'email', 'phoneNumber', 'address']) && newData.child('displayName').isString() && newData.child('displayName').val().length <= 200 && newData.child('email').isString() && newData.child('email').val().matches(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$/) && newData.child('phoneNumber').isString() && newData.child('phoneNumber').val().length <= 50 && newData.child('address').isString() && newData.child('address').val().length <= 500)",
+        "checkoutInfo": {
+          ".validate": "newData.hasChildren(['fullName', 'phone', 'address', 'region', 'gpsCode']) && newData.child('fullName').isString() && newData.child('fullName').val().length > 0 && newData.child('fullName').val().length <= 200 && newData.child('phone').isString() && newData.child('phone').val().length > 0 && newData.child('phone').val().length <= 50 && newData.child('address').isString() && newData.child('address').val().length > 0 && newData.child('address').val().length <= 500 && newData.child('region').isString() && newData.child('region').val().length <= 100 && newData.child('gpsCode').isString() && newData.child('gpsCode').val().length <= 50"
+        }
+      }
+    },
+    
+    // Categories: Public read, admin email write only
+    "categories": {
+      ".read": true,
+      ".write": "auth != null && auth.token.email == 'tredway4k@gmail.com'",
+      "$categoryId": {
+        ".validate": "newData.hasChildren(['id', 'label']) && newData.child('id').isString() && newData.child('label').isString() && newData.child('label').val().length > 0 && newData.child('label').val().length <= 100"
+      }
+    },
+    
+    // Banners: Public read, admin email write only
+    "banners": {
+      ".read": true,
+      ".write": "auth != null && auth.token.email == 'tredway4k@gmail.com'",
+      "$bannerId": {
+        ".read": true,
+        ".write": "auth != null && auth.token.email == 'tredway4k@gmail.com'",
+        ".validate": "newData.hasChildren(['imageUrl', 'order', 'active']) && newData.child('imageUrl').isString() && newData.child('imageUrl').val().length > 0 && newData.child('imageUrl').val().length <= 500 && (!newData.hasChild('linkUrl') || (newData.child('linkUrl').isString() && newData.child('linkUrl').val().length <= 500)) && newData.child('order').isNumber() && newData.child('order').val() >= 0 && newData.child('order').val() <= 1000 && newData.child('active').isBoolean() && (!newData.hasChild('createdAt') || (newData.child('createdAt').isNumber() && newData.child('createdAt').val() > 0))"
+      }
+    },
+    
+    // Store Settings: Public read, admin email write only
+    "storeSettings": {
+      ".read": true,
+      ".write": "auth != null && auth.token.email == 'tredway4k@gmail.com'",
+      ".validate": "(!newData.hasChild('storeName') || (newData.child('storeName').isString() && newData.child('storeName').val().length > 0 && newData.child('storeName').val().length <= 200)) && (!newData.hasChild('storeEmail') || (newData.child('storeEmail').isString() && newData.child('storeEmail').val().matches(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$/))) && (!newData.hasChild('taxRate') || (newData.child('taxRate').isNumber() && newData.child('taxRate').val() >= 0 && newData.child('taxRate').val() <= 100)) && (!newData.hasChild('shippingCost') || (newData.child('shippingCost').isNumber() && newData.child('shippingCost').val() >= 0 && newData.child('shippingCost').val() <= 10000))"
+    }
+  }
+}
