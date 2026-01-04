@@ -10,22 +10,27 @@ import {
   IconButton,
   Box,
   Avatar,
-} from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
-import CodeIcon from '@mui/icons-material/Code'
-import EmailIcon from '@mui/icons-material/Email'
-import PersonIcon from '@mui/icons-material/Person'
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import CodeIcon from "@mui/icons-material/Code";
+import EmailIcon from "@mui/icons-material/Email";
+import PersonIcon from "@mui/icons-material/Person";
+import picImage from "../assets/pic.png";
 
 interface AboutModalProps {
-  open: boolean
-  onClose: () => void
+  open: boolean;
+  onClose: () => void;
 }
 
 export const AboutModal = ({ open, onClose }: AboutModalProps) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
           <Stack direction="row" spacing={1} alignItems="center">
             <CodeIcon color="primary" />
             <Typography variant="h6">About the Developer</Typography>
@@ -37,23 +42,28 @@ export const AboutModal = ({ open, onClose }: AboutModalProps) => {
       </DialogTitle>
       <DialogContent>
         <Stack spacing={3}>
-          {/* Developer Image Placeholder */}
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          {/* Developer Image */}
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Avatar
-              src="/assets/developer.jpg"
+              src={picImage}
               alt="Developer"
               sx={{
                 width: 120,
                 height: 120,
-                bgcolor: 'primary.main',
-                fontSize: '3rem',
+                bgcolor: "primary.main",
+                fontSize: "3rem",
               }}
             >
-              <PersonIcon sx={{ fontSize: '4rem' }} />
+              <PersonIcon sx={{ fontSize: "4rem" }} />
             </Avatar>
           </Box>
-          <Typography variant="caption" color="text.secondary" textAlign="center" display="block">
-            Add developer image at: /public/assets/developer.jpg
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            textAlign="center"
+            display="block"
+          >
+            Samuel Osei Jnr | Full Stack Developer
           </Typography>
 
           <Divider />
@@ -68,8 +78,7 @@ export const AboutModal = ({ open, onClose }: AboutModalProps) => {
             </Typography>
           </Box>
 
-          <Divider />
-
+          {/*
           <Box>
             <Typography variant="subtitle2" color="text.secondary" gutterBottom>
               Built with
@@ -82,7 +91,7 @@ export const AboutModal = ({ open, onClose }: AboutModalProps) => {
               <Typography variant="body2">• Firestore Database</Typography>
             </Stack>
           </Box>
-
+*/}
           <Divider />
 
           <Box>
@@ -93,7 +102,13 @@ export const AboutModal = ({ open, onClose }: AboutModalProps) => {
               <Stack direction="row" spacing={1} alignItems="center">
                 <EmailIcon fontSize="small" color="primary" />
                 <Typography variant="body2">
-                  For inquiries, please contact the development team.
+                  For inquiries, please contact the development team{" "}
+                  <a
+                    href="mailto:axistech.digital@gmail.com"
+                    style={{ color: "inherit", textDecoration: "underline" }}
+                  >
+                    axistech.digital@gmail.com
+                  </a>
                 </Typography>
               </Stack>
             </Stack>
@@ -112,6 +127,5 @@ export const AboutModal = ({ open, onClose }: AboutModalProps) => {
         </Button>
       </DialogActions>
     </Dialog>
-  )
-}
-
+  );
+};
