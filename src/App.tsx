@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useContext, useEffect } from 'react'
+import { useMemo, useState, useContext, useEffect } from 'react'
 import type { ReactNode } from 'react'
 import {
   AppBar,
@@ -255,7 +255,7 @@ const Navbar = () => {
                 key={link.to}
                 component={Link}
                 to={link.to}
-                sx={(t) => ({
+                sx={{
                   color: isActive(link.to) ? '#C8102E' : 'text.primary',
                   fontWeight: isActive(link.to) ? 700 : 500,
                   fontSize: '0.875rem',
@@ -276,7 +276,7 @@ const Navbar = () => {
                   },
                   '&:hover::after': { transform: 'translateX(-50%) scaleX(1)' },
                   '&:hover': { bgcolor: 'transparent', color: '#C8102E' },
-                })}
+                }}
               >
                 {link.label}
               </Button>
