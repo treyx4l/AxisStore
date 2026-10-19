@@ -1,1 +1,5 @@
-/* App-specific overrides can go here if needed */
+/* App.css - Reset / minor app-level overrides */
+#root {
+  width: 100%;
+  min-height: 100vh;
+}

@@ -149,18 +149,23 @@ export const CategoryPage = () => {
     <Box>
       <Box
         sx={(theme) => ({
-          py: { xs: 3, md: 6 },
-          background: theme.palette.mode === 'light'
-            ? `radial-gradient(circle at top left, rgba(34, 112, 176, 0.15), transparent 55%), radial-gradient(circle at top right, rgba(226, 98, 162, 0.1), transparent 50%)`
-            : `radial-gradient(circle at top left, rgba(34, 112, 176, 0.2), transparent 55%), radial-gradient(circle at top right, rgba(226, 98, 162, 0.15), transparent 50%)`,
+          py: { xs: 3, md: 5 },
+          background: theme.palette.mode === 'dark'
+            ? 'radial-gradient(ellipse at top left, rgba(200,16,46,0.15) 0%, transparent 60%), #080808'
+            : 'radial-gradient(ellipse at top left, rgba(200,16,46,0.08) 0%, transparent 60%), #f5f5f5',
+          borderBottom: '1px solid',
+          borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.07)',
         })}
       >
         <Container maxWidth="lg">
-          <Stack spacing={2}>
-            <Typography variant="h3" component="h1" sx={{ fontSize: { xs: '1.75rem', md: '2.5rem' } }}>
-              {category.label}
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
+          <Stack spacing={1.5}>
+            <Stack direction="row" alignItems="center" spacing={1.5}>
+              <Box sx={{ width: 3, height: 28, bgcolor: '#C8102E', borderRadius: 2 }} />
+              <Typography variant="h3" component="h1" sx={{ fontSize: { xs: '1.75rem', md: '2.5rem' }, fontWeight: 800 }}>
+                {category.label}
+              </Typography>
+            </Stack>
+            <Typography variant="body1" color="text.secondary" sx={{ ml: 3 }}>
               {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''} available
             </Typography>
           </Stack>
@@ -186,13 +191,15 @@ export const CategoryPage = () => {
             {/* Filters Sidebar */}
             <Grid size={{ xs: 12, md: 3 }}>
               <Paper
-                sx={{
+                sx={(t) => ({
                   p: 3,
-                  borderRadius: 0,
-                  border: '1px solid #e0e0e0',
+                  borderRadius: 3,
+                  border: '1px solid',
+                  borderColor: t.palette.mode === 'dark' ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.08)',
+                  bgcolor: t.palette.mode === 'dark' ? '#0f0f0f' : '#fff',
                   position: { md: 'sticky' },
                   top: { md: 20 },
-                }}
+                })}
               >
                 <Stack spacing={3}>
                   <Typography variant="h6" fontWeight={700}>
